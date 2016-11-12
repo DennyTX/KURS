@@ -221,7 +221,7 @@ namespace OLDD_camera.Camera
             var calculateZoom = (int)(maxZoom - currentZoom + minZoom);
             calculatedZoom = !zoomMultiplier ? calculateZoom : calculateZoom * minZoomMultiplier*6;
 
-            GUI.Label(new Rect(widthOffset, 128, 80, 20), "zoom: " + calculatedZoom, guiStyleLabelBold); 
+            GUI.Label(new Rect(widthOffset, 128, 80, 20), "zoom: " + calculatedZoom, Styles.GUIStyleLabelBold); 
 
             isTargetPoint = GUI.Toggle(new Rect(widthOffset-2, 233, 88, 20), isTargetPoint, "Target Mark");
 
@@ -294,7 +294,7 @@ namespace OLDD_camera.Camera
         {
             if (!part.vessel.Equals(FlightGlobals.ActiveVessel))
             {
-                GUI.Label(new Rect(22, 30, 222, 22), "Broadcast from: " + part.vessel.vesselName, guiStyleGreenLabelStandart);
+                GUI.Label(new Rect(22, 30, 222, 22), "Broadcast from: " + part.vessel.vesselName, Styles.GUIStyleGreenLabelStandart);
             }
             if (IsAuxiliaryWindowOpen)
                 GUI.DrawTexture(new Rect(texturePosition.width+8, 34, 1, texturePosition.height), textureSeparator);  //vert line, textureSeparator
@@ -311,7 +311,7 @@ namespace OLDD_camera.Camera
 
             var tooltip = new GUIContent("☼", CurrentShaderName);
             GUI.Box(new Rect(8, texturePosition.yMax - 22, 20, 20), tooltip);
-            GUI.Label(new Rect(64, 128, 200, 40), GUI.tooltip, guiStyleGreenLabelBold);
+            GUI.Label(new Rect(64, 128, 200, 40), GUI.tooltip, Styles.GUIStyleGreenLabelBold);
             if (GUI.Button(new Rect(8, texturePosition.yMax - 22, 20, 20), "☼")) 
             {
                 switch (shadersToUse)
