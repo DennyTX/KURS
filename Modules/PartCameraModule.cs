@@ -236,18 +236,18 @@ namespace OLDD_camera.Modules
             PartResourceDefinition definition = PartResourceLibrary.Instance.GetDefinition("ElectricCharge");
             List<Part> parts = new List<Part>();
             parts = FlightGlobals.ActiveVessel.Parts;
-            double ElectricChargeAmount = 0;
+            double electricChargeAmount = 0;
             foreach (Part p in parts)
             {
                 foreach (PartResource r in p.Resources)
                 {
                     if (r.info.id == definition.id)
                     {
-                        ElectricChargeAmount += r.amount;
+                        electricChargeAmount += r.amount;
                     }
                 }
             }
-            if (ElectricChargeAmount > 0)
+            if (electricChargeAmount > 0)
                 IsPowered = IsEnabled ? "ACTIVE" : "TRUE";
             else
                 IsPowered = "FALSE";

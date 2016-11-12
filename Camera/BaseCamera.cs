@@ -73,7 +73,7 @@ namespace OLDD_camera.Camera
             windowSize = (float)windowSizeIni/2;
             this.part = part;
             subWindowLabel = windowLabel;
-            this.windowLabel = windowLabelIni;
+            windowLabel = windowLabelIni;
             partGameObject = part.gameObject;
 
             //InitWindow();
@@ -186,11 +186,11 @@ namespace OLDD_camera.Camera
             if (IsActivated)
             {
                 windowPosition = GUI.Window(windowId, KSPUtil.ClampRectToScreen(windowPosition), DrawWindow, windowLabel); //draw main window
-                int ElectricityId = PartResourceLibrary.Instance.GetDefinition("ElectricCharge").id;
-                double ElectricChargeAmount = 0f;
-                double ElectricChargeMaxAmount = 0f;
-                part.GetConnectedResourceTotals(ElectricityId, out ElectricChargeAmount, out ElectricChargeMaxAmount);
-                if (HighLogic.LoadedSceneIsFlight && !FlightDriver.Pause) part.RequestResource(ElectricityId, 0.02 * TimeWarp.fixedDeltaTime);
+                int electricityId = PartResourceLibrary.Instance.GetDefinition("ElectricCharge").id;
+                double electricChargeAmount = 0f;
+                double electricChargeMaxAmount = 0f;
+                part.GetConnectedResourceTotals(electricityId, out electricChargeAmount, out electricChargeMaxAmount);
+                if (HighLogic.LoadedSceneIsFlight && !FlightDriver.Pause) part.RequestResource(electricityId, 0.02 * TimeWarp.fixedDeltaTime);
             }
 		}
 
@@ -294,7 +294,7 @@ namespace OLDD_camera.Camera
         {
             if (!part.vessel.Equals(FlightGlobals.ActiveVessel))
             {
-                GUI.Label(new Rect(22, 30, 222, 22), "Broadcast from: " + part.vessel.vesselName, Styles.GUIStyleGreenLabelStandart);
+                GUI.Label(new Rect(30, 30, 222, 22), "Broadcast from: " + part.vessel.vesselName, Styles.GUIStyleGreenLabelStandart);
             }
             if (IsAuxiliaryWindowOpen)
                 GUI.DrawTexture(new Rect(texturePosition.width+8, 34, 1, texturePosition.height), textureSeparator);  //vert line, textureSeparator

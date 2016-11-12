@@ -1,7 +1,22 @@
 ﻿namespace OLDD_camera.Camera
 {
-    public class CameraInfo: IConfigNode
+    public class CameraInfo : IConfigNode
     {
+        public CameraInfo()
+        {
+            WindowSize = 256;
+            CurrentHits = -1;
+            BulletName = "Sphere";
+            CameraName = "CamExt";
+            RotatorZ = "Case";
+            RotatorY = "Tube";
+            Zoommer = "Lenz";
+            Cap = "Cap";
+            Stepper = 1000; // using for zooming visualization. for different camera models
+            AllowedScanDistance = 1000; //max allowed distance for scanning experiment
+            ResourceScanning = "ElectricCharge.50"; //(resourseName/resourceUsage) for scanning
+        }
+
         public int WindowSize { get; set; }
 
         public string ResourceScanning { get; set; }
@@ -43,23 +58,39 @@
         public void Load(ConfigNode node)
         {
             var config = node.GetNode("cameraConfig");
-
-            WindowSize = int.Parse(config.GetValue("windowSize"));
-            CameraName = config.GetValue("cameraName");
-            RotatorZ = config.GetValue("rotatorZ");
-            RotatorY = config.GetValue("rotatorY");
-            Cap = config.GetValue("cap");
-            BulletName = config.GetValue("bulletName");
-            Stepper = int.Parse(config.GetValue("stepper"));
-            AllowedScanDistance = int.Parse(config.GetValue("allowedScanDistance"));
-            IsOnboard = bool.Parse(config.GetValue("IsOnboard"));
-            IsLookAtMe = bool.Parse(config.GetValue("IsLookAtMe"));
-            IsLookAtMeAutoZoom = bool.Parse(config.GetValue("IsLookAtMeAutoZoom"));
-            IsFollowMe = bool.Parse(config.GetValue("IsFollowMe"));
-            IsFollowMeOffsetX = float.Parse(config.GetValue("IsFollowMeOffsetX"));
-            IsFollowMeOffsetY = float.Parse(config.GetValue("IsFollowMeOffsetY"));
-            IsFollowMeOffsetZ = float.Parse(config.GetValue("IsFollowMeOffsetZ"));
-            IsTargetCam = bool.Parse(config.GetValue("IsTargetCam"));
+            if (config == null) return;
+            if (config.HasValue("windowSize"))
+                WindowSize = int.Parse(config.GetValue("windowSize"));
+            if (config.HasValue("cameraName"))
+                CameraName = config.GetValue("cameraName");
+            if (config.HasValue("rotatorZ"))
+                RotatorZ = config.GetValue("rotatorZ");
+            if (config.HasValue("rotatorY"))
+                RotatorY = config.GetValue("rotatorY");
+            if (config.HasValue("cap"))
+                Cap = config.GetValue("cap");
+            if (config.HasValue("bulletName"))
+                BulletName = config.GetValue("bulletName");
+            if (config.HasValue("stepper"))
+                Stepper = int.Parse(config.GetValue("stepper"));
+            if (config.HasValue("allowedScanDistance"))
+                AllowedScanDistance = int.Parse(config.GetValue("allowedScanDistance"));
+            if (config.HasValue("IsOnboard"))
+                IsOnboard = bool.Parse(config.GetValue("IsOnboard"));
+            if (config.HasValue("IsLookAtMe"))
+                IsLookAtMe = bool.Parse(config.GetValue("IsLookAtMe"));
+            if (config.HasValue("IsLookAtMeAutoZoom"))
+                IsLookAtMeAutoZoom = bool.Parse(config.GetValue("IsLookAtMeAutoZoom"));
+            if (config.HasValue("IsFollowMe"))
+                IsFollowMe = bool.Parse(config.GetValue("IsFollowMe"));
+            if (config.HasValue("IsFollowMeOffsetX"))
+                IsFollowMeOffsetX = float.Parse(config.GetValue("IsFollowMeOffsetX"));
+            if (config.HasValue("IsFollowMeOffsetY"))
+                IsFollowMeOffsetY = float.Parse(config.GetValue("IsFollowMeOffsetY"));
+            if (config.HasValue("IsFollowMeOffsetZ"))
+                IsFollowMeOffsetZ = float.Parse(config.GetValue("IsFollowMeOffsetZ"));
+            if (config.HasValue("IsTargetCam"))
+                IsTargetCam = bool.Parse(config.GetValue("IsTargetCam"));
         }
 
         public void Save(ConfigNode node)
