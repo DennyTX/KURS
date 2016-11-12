@@ -80,38 +80,34 @@ namespace OLDD_camera.Camera
             set { currentZoom = value; }
         }
 
-        public PartCamera(Part part, string resourceScanning, string bulletName, int _hits,
-                string rotatorZ, string rotatorY, string zoommer, float stepper, string cameraName, int allowedDistance, int windowSize,
-                bool _IsOnboard, bool _IsLookAtMe, bool _IsLookAtMeAutoZoom, bool _IsFollowMe, bool _IsTargetCam,
-                float _IsFollowMeOffsetXXX, float _IsFollowMeOffsetYYY, float _IsFollowMeOffsetZZZ,
-                string windowLabel = "Camera")
-            : base(part, windowSize, windowLabel)
+        public PartCamera(Part part, CameraInfo info, string windowLabel = "Camera")
+            : base(part, info.WindowSize, windowLabel)
         {
-            var splresource = resourceScanning.Split('.').ToList();
+            var splresource = info.ResourceScanning.Split('.').ToList();
             ResourceName = splresource[0];
-            ResourceUsage = Int32.Parse(splresource[1]);
-            this.bulletName = bulletName;
-            this.rotatorZ = partGameObject.gameObject.GetChild(rotatorZ);
-            this.rotatorY = partGameObject.gameObject.GetChild(rotatorY);
-            this.zoommer = partGameObject.gameObject.GetChild(zoommer);
-            this.stepper = stepper;
-            camObject = partGameObject.gameObject.GetChild(cameraName);
-            AllowedDistance = allowedDistance;
+            ResourceUsage = int.Parse(splresource[1]);
+            bulletName = info.BulletName;
+            rotatorZ = partGameObject.gameObject.GetChild(info.RotatorZ);
+            rotatorY = partGameObject.gameObject.GetChild(info.RotatorY);
+            zoommer = partGameObject.gameObject.GetChild(info.Zoommer);
+            stepper = info.Stepper;
+            camObject = partGameObject.gameObject.GetChild(info.CameraName);
+            AllowedDistance = info.AllowedScanDistance;
 
-            IsOnboard = _IsOnboard;
-            IsLookAtMe = _IsLookAtMe;
-            IsFollowMe = _IsFollowMe;
-            IsLookAtMeAutoZoom = _IsLookAtMeAutoZoom;
-            IsTargetCam = _IsTargetCam;
-            IsFollowMeOffsetXXX = _IsFollowMeOffsetXXX;
-            IsFollowMeOffsetYYY = _IsFollowMeOffsetYYY;
-            IsFollowMeOffsetZZZ = _IsFollowMeOffsetZZZ;
+            IsOnboard = info.IsOnboard;
+            IsLookAtMe = info.IsLookAtMe;
+            IsFollowMe = info.IsFollowMe;
+            IsLookAtMeAutoZoom = info.IsLookAtMeAutoZoom;
+            IsTargetCam = info.IsTargetCam;
+            IsFollowMeOffsetXXX = info.IsFollowMeOffsetX;
+            IsFollowMeOffsetYYY = info.IsFollowMeOffsetY;
+            IsFollowMeOffsetZZZ = info.IsFollowMeOffsetZ;
 
             lastZoom = currentZoom;
 
             GameEvents.onGameSceneLoadRequested.Add(LevelWasLoaded);
 
-            GetCurrentBullets(bulletName, _hits);
+            GetCurrentBullets(bulletName, info.CurrentHits);
         }
 
         private void GetCurrentBullets(string bulletName, int _hits)

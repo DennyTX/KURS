@@ -63,11 +63,11 @@ namespace OLDD_camera
         {
             _showWindow = WindowVisiblityOn && HighLogic.LoadedSceneIsFlight && !FlightGlobals.ActiveVessel.isEVA && !MapView.MapIsEnabled;
             if (_shadersToUse0)
-                BaseKspCamera.shadersToUse = 0;
+                BaseCamera.shadersToUse = 0;
             else if (_shadersToUse1)
-                BaseKspCamera.shadersToUse = 1;
+                BaseCamera.shadersToUse = 1;
             else if (_shadersToUse2)
-                BaseKspCamera.shadersToUse = 2;
+                BaseCamera.shadersToUse = 2;
         }
 
         private void OnGUI()
@@ -105,11 +105,11 @@ namespace OLDD_camera
                     GameEvents.onVesselChange.Fire(FlightGlobals.ActiveVessel);
             }
             var UnloadDistance = "Unload at: " + FlightGlobals.ActiveVessel.vesselRanges.landed.load;
-            GUI.Label(new Rect(140, 20, 111, 22), UnloadDistance, BaseKspCamera.guiStyleLabelBold);
+            GUI.Label(new Rect(140, 20, 111, 22), UnloadDistance, BaseCamera.guiStyleLabelBold);
 
             if (GUI.Toggle(new Rect(20, 40, 222, 20), _shadersToUse0, "Shaders pack Full (7 choices)"))
             {
-                BaseKspCamera.shadersToUse = 0;
+                BaseCamera.shadersToUse = 0;
                 _shadersToUse0 = true;
                 _shadersToUse1 = false;
                 _shadersToUse2 = false;
@@ -117,7 +117,7 @@ namespace OLDD_camera
             }
             if (GUI.Toggle(new Rect(20, 60, 222, 20), _shadersToUse1, "Shaders pack Noisy (2 choices)"))
             {
-                BaseKspCamera.shadersToUse = 1;
+                BaseCamera.shadersToUse = 1;
                 _shadersToUse0 = false;
                 _shadersToUse1 = true;
                 _shadersToUse2 = false;
@@ -125,14 +125,14 @@ namespace OLDD_camera
             }
             if (GUI.Toggle(new Rect(20, 80, 222, 20), _shadersToUse2, "Shaders pack Standart (3 choices)"))
             {
-                BaseKspCamera.shadersToUse = 2;
+                BaseCamera.shadersToUse = 2;
                 _shadersToUse0 = false;
                 _shadersToUse1 = false;
                 _shadersToUse2 = true;
                 SaveWindowData();
             }
 
-            GUI.Label(new Rect(2, 102, WindowTextureWidth, 24), "- Vessels with camera in range -", BaseKspCamera.guiStyleGreenLabelBold);
+            GUI.Label(new Rect(2, 102, WindowTextureWidth, 24), "- Vessels with camera in range -", BaseCamera.guiStyleGreenLabelBold);
 
             var vessels = _vesselsWithCamera;
             vessels.Remove(FlightGlobals.ActiveVessel);
@@ -143,7 +143,7 @@ namespace OLDD_camera
                 var situation = vessel.RevealSituationString();
                 var str = string.Format("{0}. {1} ({2:N} m) - {3} ", i, vessel.vesselName, range, situation);
                 if (range <= CheckDist)
-                    GUI.Label(new Rect(20, 104 + 20 * i, 222, 20), str, BaseKspCamera.guiStyleGreenLabelStandart);
+                    GUI.Label(new Rect(20, 104 + 20 * i, 222, 20), str, BaseCamera.guiStyleGreenLabelStandart);
                 else
                     GUI.Label(new Rect(20, 104 + 20 * i, 222, 20), str);
             }

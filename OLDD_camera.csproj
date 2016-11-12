@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="AssetLoader.cs" />
     <Compile Include="CameraDestroyer.cs" />
+    <Compile Include="Camera\CameraInfo.cs" />
     <Compile Include="DockCamToolbarButton.cs" />
     <Compile Include="ToolbarWrapper.cs" />
     <Compile Include="Modules\PartCameraModule.cs" />
@@ -59,6 +60,11 @@
       <HintPath>D:\KSP_121_test\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="OnboardCamera.cfg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

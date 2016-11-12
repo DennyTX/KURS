@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace OLDD_camera.Camera
 {
-    class DockingCamera:BaseKspCamera
+    class DockingCamera:BaseCamera
     {
         private static HashSet<int> usedId = new HashSet<int>();
 

@@ -37,8 +37,7 @@ namespace OLDD_camera
         /// </summary>
         private void VesselDestroy(Vessel vessel)
         {
-            foreach (var part in vessel.parts)
-                PartCameraDeactivate(part);
+            vessel.FindPartModulesImplementing<ICamPart>().ForEach(camPart => camPart.Deactivate());
         }
 
         /// <summary>
@@ -46,12 +45,7 @@ namespace OLDD_camera
         /// </summary>
         private void PartCameraDeactivate(Part part)
         {
-            foreach (var module in part.Modules)
-            {
-                var kspCamera = module as ICamPart;
-                if (kspCamera != null)
-                    kspCamera.Deactivate();
-            }
+            part.FindModulesImplementing<ICamPart>().ForEach(camPart => camPart.Deactivate());
         }
     }
 }

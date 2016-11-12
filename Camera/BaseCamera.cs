@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,14 +6,12 @@ using UnityEngine;
 
 namespace OLDD_camera.Camera
 {
-    public abstract class BaseKspCamera
+    public abstract class BaseCamera
     {
         protected static int windowCount = 0;
         //protected static double ElectricChargeAmount;
         public static Material CurrentShader;
         protected UpdateGUIObject updateGUIObject;
-
-        //comment
 
         internal static GUIStyle guiStyleGreenLabelSmall;
         internal static GUIStyle guiStyleGreenLabelStandart;
@@ -70,7 +68,7 @@ namespace OLDD_camera.Camera
         protected List<GameObject> allCamerasGameObject = new List<GameObject>();
         protected List<string> cameraNames = new List<string>{"GalaxyCamera", "Camera ScaledSpace", "Camera 01", "Camera 00" };
         
-        public BaseKspCamera(Part part, int windowSize, string windowLabel = "Camera")
+        public BaseCamera(Part part, int windowSize, string windowLabel = "Camera")
         {
             this.windowSize = windowSize/2;
             this.part = part;
@@ -98,7 +96,7 @@ namespace OLDD_camera.Camera
             guiStyleRedLabelBoldLarge.alignment = TextAnchor.MiddleCenter;
         }
 
-        ~BaseKspCamera()
+        ~BaseCamera()
         {
             GameEvents.OnFlightUIModeChanged.Remove(FlightUIModeChanged);
         }

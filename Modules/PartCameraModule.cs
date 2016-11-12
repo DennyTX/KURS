@@ -16,42 +16,42 @@ namespace OLDD_camera.Modules
         [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Bullets: ")]
         public string aboutHits;
 
-        [KSPField(isPersistant = true)]
-        public int currentHits = -1;
+        //[KSPField(isPersistant = true)]
+        //public int currentHits = -1;
         
-        [KSPField]
-        public string bulletName = "Sphere";
+        //[KSPField]
+        //public string bulletName = "Sphere";
 
         [KSPField(guiActive = true, guiActiveEditor = false, guiName = "Camera", isPersistant = true),
         UI_Toggle(controlEnabled = true, enabledText = "ON", disabledText = "OFF", scene = UI_Scene.All)]
         public bool IsEnabled;
 
-        [KSPField]
-        public int windowSize = 256;
+        //[KSPField]
+        //public int windowSize = 256;
 
-        [KSPField]
-        public string cameraName = "CamExt";
+        //[KSPField]
+        //public string cameraName = "CamExt";
 
-        [KSPField]
-        public string rotatorZ ;
+        //[KSPField]
+        //public string rotatorZ ;
 
-        [KSPField]
-        public string rotatorY;
+        //[KSPField]
+        //public string rotatorY;
 
-        [KSPField]
-        public string cap;
+        //[KSPField]
+        //public string cap;
 
-        [KSPField]
-        public string zoommer;
+        //[KSPField]
+        //public string zoommer;
 
-        [KSPField]
-        public float stepper;
+        //[KSPField]
+        //public float stepper;
 
-        [KSPField]
-        public int allowedScanDistance;
+        //[KSPField]
+        //public int allowedScanDistance;
 
-        [KSPField]
-        public string resourceScanning;
+        //[KSPField]
+        //public string resourceScanning;
 
         private GameObject capObject;
         private GameObject camObject;
@@ -60,41 +60,35 @@ namespace OLDD_camera.Modules
 
         private float _targetOffset = 100;
 
-        [KSPField(isPersistant = true)]
-        private bool _IsOnboard;
-        [KSPField(isPersistant = true)]
-        private bool _IsLookAtMe;
-        [KSPField(isPersistant = true)]
-        private bool _IsLookAtMeAutoZoom;
-        [KSPField(isPersistant = true)]
-        private bool _IsFollowMe;
-        [KSPField(isPersistant = true)]
-        private bool _IsTargetCam;
+        //[KSPField(isPersistant = true)]
+        //private bool _IsOnboard;
+        //[KSPField(isPersistant = true)]
+        //private bool _IsLookAtMe;
+        //[KSPField(isPersistant = true)]
+        //private bool _IsLookAtMeAutoZoom;
+        //[KSPField(isPersistant = true)]
+        //private bool _IsFollowMe;
+        //[KSPField(isPersistant = true)]
+        //private bool _IsTargetCam;
+
+        //[KSPField(isPersistant = true)]
+        //private float _IsFollowMeOffsetXXX;
+        //[KSPField(isPersistant = true)]
+        //private float _IsFollowMeOffsetYYY;
+        //[KSPField(isPersistant = true)]
+        //private float _IsFollowMeOffsetZZZ;
 
         [KSPField(isPersistant = true)]
-        private float _IsFollowMeOffsetXXX;
-        [KSPField(isPersistant = true)]
-        private float _IsFollowMeOffsetYYY;
-        [KSPField(isPersistant = true)]
-        private float _IsFollowMeOffsetZZZ;
+        private CameraInfo _cameraInfo;
 
-        public override void OnStart(StartState state = StartState.Flying)
+        public override void OnStart(StartState state)
         {
-            if (state == StartState.Editor || camera != null) return;
-            Start();
-        }
+            if (HighLogic.LoadedSceneIsEditor || MapView.MapIsEnabled || camera != null) return;
 
-        public void Start()
-        {
-            if (camera == null)
-            {
-                camera = new PartCamera(part, resourceScanning, bulletName, currentHits,
-                    rotatorZ, rotatorY, zoommer, stepper, cameraName, allowedScanDistance, windowSize,
-                    _IsOnboard, _IsLookAtMe, _IsLookAtMeAutoZoom, _IsFollowMe, _IsTargetCam,
-                    _IsFollowMeOffsetXXX, _IsFollowMeOffsetYYY, _IsFollowMeOffsetZZZ);
-            }
-            capObject = part.gameObject.GetChild(cap);
-            camObject = part.gameObject.GetChild(cameraName);
+            camera = new PartCamera(part, _cameraInfo);
+          
+            capObject = part.gameObject.GetChild(_cameraInfo.Cap);
+            camObject = part.gameObject.GetChild(_cameraInfo.CameraName);
             _initialUpVector = camObject.transform.up;
             camera._initialCamRotation = camera._currentCamRotation = camObject.transform.rotation;
             camera._initialCamPosition = camera._currentCamPosition = camObject.transform.position;
@@ -133,31 +127,31 @@ namespace OLDD_camera.Modules
                 StartCoroutine(camera.WaitForRay());
             }
 
-            _IsOnboard = camera.IsOnboard;
-            _IsLookAtMe = camera.IsLookAtMe;
-            _IsLookAtMeAutoZoom = camera.IsLookAtMeAutoZoom;
-            _IsFollowMe = camera.IsFollowMe;
-            _IsTargetCam = camera.IsTargetCam;
+            _cameraInfo.IsOnboard = camera.IsOnboard;
+            _cameraInfo.IsLookAtMe = camera.IsLookAtMe;
+            _cameraInfo.IsLookAtMeAutoZoom = camera.IsLookAtMeAutoZoom;
+            _cameraInfo.IsFollowMe = camera.IsFollowMe;
+            _cameraInfo.IsTargetCam = camera.IsTargetCam;
 
-            if (_IsFollowMe)
+            if (_cameraInfo.IsFollowMe)
             {
-                _IsFollowMeOffsetXXX = camera.IsFollowMeOffsetXXX;
-                _IsFollowMeOffsetYYY = camera.IsFollowMeOffsetYYY;
-                _IsFollowMeOffsetZZZ = camera.IsFollowMeOffsetZZZ;               
+                _cameraInfo.IsFollowMeOffsetX = camera.IsFollowMeOffsetXXX;
+                _cameraInfo.IsFollowMeOffsetY = camera.IsFollowMeOffsetYYY;
+                _cameraInfo.IsFollowMeOffsetZ = camera.IsFollowMeOffsetZZZ;               
             }
             //FlightGlobals.fetch.SetVesselTarget(FlightGlobals.ActiveVessel); 
-            if (_IsOnboard) Onboard();
-            if (_IsLookAtMe) LookAtMe();
-            if (_IsFollowMe) FollowMe();
-            if (_IsTargetCam) TargetCam();
+            if (_cameraInfo.IsOnboard) Onboard();
+            if (_cameraInfo.IsLookAtMe) LookAtMe();
+            if (_cameraInfo.IsFollowMe) FollowMe();
+            if (_cameraInfo.IsTargetCam) TargetCam();
 
             if (camera.IsActivated)
                 camera.Update();
 
             GetElectricConsumption();
 
-            currentHits = camera.hits;
-            aboutHits = currentHits + "/4";
+            _cameraInfo.CurrentHits = camera.hits;
+            aboutHits = _cameraInfo.CurrentHits + "/4";
         }
 
         public void FixedUpdate()
@@ -212,8 +206,8 @@ namespace OLDD_camera.Modules
                 camera.CurrentCam = camObject.transform;
             }
 
-            var offset = camera.CurrentCamTarget.right * _IsFollowMeOffsetXXX + camera.CurrentCamTarget.up * _IsFollowMeOffsetYYY +
-                            camera.CurrentCamTarget.forward * _IsFollowMeOffsetZZZ;
+            var offset = camera.CurrentCamTarget.right * _cameraInfo.IsFollowMeOffsetX + camera.CurrentCamTarget.up * _cameraInfo.IsFollowMeOffsetY +
+                            camera.CurrentCamTarget.forward * _cameraInfo.IsFollowMeOffsetZ;
             camera.CurrentCam.position = camera.CurrentCamTarget.position + offset;
 
             camera.CurrentCam.LookAt(FlightGlobals.ActiveVessel.CoM, camera.CurrentCamTarget.up);
@@ -292,9 +286,5 @@ namespace OLDD_camera.Modules
         /// Deactivate camera
         /// </summary>
         void Deactivate();
-        /// <summary>
-        /// Adding a camera
-        /// </summary>
-        void Start();
     }
 }
