@@ -13,8 +13,6 @@ namespace OLDD_camera.Camera
         public static Material CurrentShader;
         protected UpdateGUIObject updateGUIObject;
 
-        //comment
-
         internal static GUIStyle guiStyleGreenLabelSmall;
         internal static GUIStyle guiStyleGreenLabelStandart;
         internal static GUIStyle guiStyleGreenLabelBold;
