@@ -12,8 +12,8 @@ namespace OLDD_camera.Camera
         public float MaxSpeed = 2;
 
         private static List<Texture2D>[] _textureWhiteNoise;
-        private static GUIStyle _guiStyleRedLabel;
-        private static GUIStyle _guiStyleGreenLabel;
+        //private static GUIStyle _guiStyleRedLabel;
+        //private static GUIStyle _guiStyleGreenLabel;
 
         private string _lastVesselName;
         private string _windowLabelSuffix;
@@ -81,10 +81,6 @@ namespace OLDD_camera.Camera
         {
             _noiseActive = noiseActive;
             _target = new TargetHelper(part);
-            _guiStyleRedLabel = new GUIStyle(HighLogic.Skin.label);
-            _guiStyleRedLabel.normal.textColor = Color.red;
-            _guiStyleGreenLabel = new GUIStyle(HighLogic.Skin.label);
-            _guiStyleGreenLabel.normal.textColor = Color.green;
 
             //GameEvents.onVesselChange.Add(vesselChange);
 
@@ -278,7 +274,7 @@ namespace OLDD_camera.Camera
                             "Target is not\n a DockPort");
                         if (_target.Destination < 200f)
                             GUI.Label(new Rect(texturePosition.xMin + 10, 84, 96, 40),
-                                "DockPort is\n available", _guiStyleGreenLabel);
+                                "DockPort is\n available", Styles.GUIStyleGreenLabel);
                     }
 
                     /// <summary>
@@ -302,7 +298,7 @@ namespace OLDD_camera.Camera
                         String.Format("vY:{0:f2}", _target.SpeedY));
                     if (_target.SpeedZ < -MaxSpeed)
                         GUI.Label(new Rect(texturePosition.xMax - 70, 32 + i++*20, 70, 20),
-                            String.Format("vZ:{0:f2}", _target.SpeedZ), _guiStyleRedLabel);
+                            String.Format("vZ:{0:f2}", _target.SpeedZ), Styles.GUIStyleRedLabel);
                     else
                         GUI.Label(new Rect(texturePosition.xMax - 70, 32 + i++*20, 70, 20),
                             String.Format("vZ:{0:f2}", _target.SpeedZ));
@@ -362,14 +358,14 @@ namespace OLDD_camera.Camera
         {
             UpdateWhiteNoise();
             
-            allCamerasGameObject.Last().transform.position = _moduleDockingNodeGameObject.transform.position; // near&&far
-            allCamerasGameObject.Last().transform.rotation = _moduleDockingNodeGameObject.transform.rotation;
+            AllCamerasGameObject.Last().transform.position = _moduleDockingNodeGameObject.transform.position; // near&&far
+            AllCamerasGameObject.Last().transform.rotation = _moduleDockingNodeGameObject.transform.rotation;
             
-            allCamerasGameObject[0].transform.rotation = allCamerasGameObject.Last().transform.rotation; // skybox galaxy
-            allCamerasGameObject[1].transform.rotation = allCamerasGameObject.Last().transform.rotation; // nature object
-            allCamerasGameObject[2].transform.rotation = allCamerasGameObject.Last().transform.rotation; // middle 
-            allCamerasGameObject[2].transform.position = allCamerasGameObject.Last().transform.position;
-            allCameras.ForEach(cam => cam.fieldOfView = currentZoom);
+            AllCamerasGameObject[0].transform.rotation = AllCamerasGameObject.Last().transform.rotation; // skybox galaxy
+            AllCamerasGameObject[1].transform.rotation = AllCamerasGameObject.Last().transform.rotation; // nature object
+            AllCamerasGameObject[2].transform.rotation = AllCamerasGameObject.Last().transform.rotation; // middle 
+            AllCamerasGameObject[2].transform.position = AllCamerasGameObject.Last().transform.position;
+            AllCameras.ForEach(cam => cam.fieldOfView = currentZoom);
         }
     }
 }

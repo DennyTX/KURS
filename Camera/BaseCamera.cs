@@ -13,11 +13,11 @@ namespace OLDD_camera.Camera
         public static Material CurrentShader;
         protected UpdateGUIObject updateGUIObject;
 
-        internal static GUIStyle guiStyleGreenLabelSmall;
-        internal static GUIStyle guiStyleGreenLabelStandart;
-        internal static GUIStyle guiStyleGreenLabelBold;
-        internal static GUIStyle guiStyleLabelBold;
-        internal static GUIStyle guiStyleRedLabelBoldLarge;
+        //internal static GUIStyle guiStyleGreenLabelSmall;
+        //internal static GUIStyle guiStyleGreenLabelStandart;
+        //internal static GUIStyle guiStyleGreenLabelBold;
+        //internal static GUIStyle guiStyleLabelBold;
+        //internal static GUIStyle guiStyleRedLabelBoldLarge;
 
         internal Rect windowPosition;
         internal Rect texturePosition;
@@ -64,16 +64,16 @@ namespace OLDD_camera.Camera
         internal bool IsAuxiliaryWindowOpen = false;
         internal bool IsAuxiliaryWindowButtonPres = false;
 
-        protected List<UnityEngine.Camera> allCameras = new List<UnityEngine.Camera>();
-        protected List<GameObject> allCamerasGameObject = new List<GameObject>();
-        protected List<string> cameraNames = new List<string>{"GalaxyCamera", "Camera ScaledSpace", "Camera 01", "Camera 00" };
+        protected List<UnityEngine.Camera> AllCameras = new List<UnityEngine.Camera>();
+        protected List<GameObject> AllCamerasGameObject = new List<GameObject>();
+        protected List<string> CameraNames = new List<string>{"GalaxyCamera", "Camera ScaledSpace", "Camera 01", "Camera 00" };
         
-        public BaseCamera(Part part, int windowSize, string windowLabel = "Camera")
+        protected BaseCamera(Part part, int windowSizeIni, string windowLabelIni = "Camera")
         {
-            this.windowSize = windowSize/2;
+            windowSize = (float)windowSizeIni/2;
             this.part = part;
             subWindowLabel = windowLabel;
-            this.windowLabel = windowLabel;
+            this.windowLabel = windowLabelIni;
             partGameObject = part.gameObject;
 
             //InitWindow();
@@ -84,16 +84,6 @@ namespace OLDD_camera.Camera
             GameObject updateGUIHolder = new GameObject();
             updateGUIObject = updateGUIHolder.AddComponent<UpdateGUIObject>();
             //updateGUIHolder.transform.parent = part.transform;
-
-            guiStyleLabelBold = new GUIStyle("label") { fontSize = 13, fontStyle = FontStyle.Bold };
-            guiStyleGreenLabelSmall = new GUIStyle("label") { fontSize = 11 };
-            guiStyleGreenLabelSmall.normal.textColor = Color.green;
-            guiStyleGreenLabelStandart = new GUIStyle(guiStyleGreenLabelSmall) { fontSize = 13 };
-            guiStyleGreenLabelBold = new GUIStyle(guiStyleGreenLabelSmall) { fontSize = 15, fontStyle = FontStyle.Bold };
-            guiStyleGreenLabelBold.alignment = TextAnchor.MiddleCenter;
-            guiStyleRedLabelBoldLarge = new GUIStyle("label") { fontSize = 25, fontStyle = FontStyle.Bold };
-            guiStyleRedLabelBoldLarge.normal.textColor = Color.red;
-            guiStyleRedLabelBoldLarge.alignment = TextAnchor.MiddleCenter;
         }
 
         ~BaseCamera()
@@ -143,15 +133,15 @@ namespace OLDD_camera.Camera
         /// </summary>
         protected virtual void InitCameras()
         {
-            allCamerasGameObject = cameraNames.Select(a => new GameObject()).ToList();
-            allCameras = allCamerasGameObject.Select((go, i) =>
+            AllCamerasGameObject = CameraNames.Select(a => new GameObject()).ToList();
+            AllCameras = AllCamerasGameObject.Select((go, i) =>
                 {
                     var camera = go.AddComponent<UnityEngine.Camera>();
-                    var cameraExample = UnityEngine.Camera.allCameras.FirstOrDefault(cam => cam.name == cameraNames[i]);
+                    var cameraExample = UnityEngine.Camera.allCameras.FirstOrDefault(cam => cam.name == CameraNames[i]);
                     if (cameraExample != null)
                     {
                         camera.CopyFrom(cameraExample);
-                        camera.name = string.Format("{1} copy of {0}", cameraNames[i], windowCount);
+                        camera.name = string.Format("{1} copy of {0}", CameraNames[i], windowCount);
                         camera.targetTexture = renderTexture;
                     }
                     return camera;
@@ -163,8 +153,8 @@ namespace OLDD_camera.Camera
         /// </summary>
         protected virtual void DestroyCameras()
         {
-            allCameras.ForEach(UnityEngine.Camera.Destroy);
-            allCameras.Clear();// = new List<UnityEngine.Camera>();
+            AllCameras.ForEach(UnityEngine.Camera.Destroy);
+            AllCameras.Clear();// = new List<UnityEngine.Camera>();
         }
 
         /// <summary>
@@ -266,7 +256,7 @@ namespace OLDD_camera.Camera
         {
             if (TargetHelper.IsTargetSelect)
             {
-                var camera = allCameras.Last();
+                var camera = AllCameras.Last();
                 var vessel = TargetHelper.Target as Vessel;
 
                 if (vessel == null)
@@ -396,7 +386,7 @@ namespace OLDD_camera.Camera
         /// </summary>
         protected virtual RenderTexture Render()
         {
-            allCameras.ForEach(a => a.Render());
+            AllCameras.ForEach(a => a.Render());
             return renderTexture;
         }
 
@@ -436,19 +426,19 @@ namespace OLDD_camera.Camera
         /// </summary>
         public virtual void Update()
         {
-            allCamerasGameObject.Last().transform.position = partGameObject.transform.position;
-            allCamerasGameObject.Last().transform.rotation = partGameObject.transform.rotation;
+            AllCamerasGameObject.Last().transform.position = partGameObject.transform.position;
+            AllCamerasGameObject.Last().transform.rotation = partGameObject.transform.rotation;
 
-            allCamerasGameObject.Last().transform.Rotate(new Vector3(-1f, 0, 0), 90);
-            allCamerasGameObject.Last().transform.Rotate(new Vector3(0, 1f, 0), rotateY);
-            allCamerasGameObject.Last().transform.Rotate(new Vector3(1f, 0, 0), rotateX);
-            allCamerasGameObject.Last().transform.Rotate(new Vector3(0, 0, 1f), rotateZ);
+            AllCamerasGameObject.Last().transform.Rotate(new Vector3(-1f, 0, 0), 90);
+            AllCamerasGameObject.Last().transform.Rotate(new Vector3(0, 1f, 0), rotateY);
+            AllCamerasGameObject.Last().transform.Rotate(new Vector3(1f, 0, 0), rotateX);
+            AllCamerasGameObject.Last().transform.Rotate(new Vector3(0, 0, 1f), rotateZ);
 
-            allCamerasGameObject[0].transform.rotation = allCamerasGameObject.Last().transform.rotation;
-            allCamerasGameObject[1].transform.rotation = allCamerasGameObject.Last().transform.rotation;
-            allCamerasGameObject[2].transform.rotation = allCamerasGameObject.Last().transform.rotation;
-            allCamerasGameObject[2].transform.position = allCamerasGameObject.Last().transform.position;
-            allCameras.ForEach(cam => cam.fieldOfView = currentZoom);
+            AllCamerasGameObject[0].transform.rotation = AllCamerasGameObject.Last().transform.rotation;
+            AllCamerasGameObject[1].transform.rotation = AllCamerasGameObject.Last().transform.rotation;
+            AllCamerasGameObject[2].transform.rotation = AllCamerasGameObject.Last().transform.rotation;
+            AllCamerasGameObject[2].transform.position = AllCamerasGameObject.Last().transform.position;
+            AllCameras.ForEach(cam => cam.fieldOfView = currentZoom);
         }
     }
 }

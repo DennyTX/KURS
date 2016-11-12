@@ -105,7 +105,7 @@ namespace OLDD_camera
                     GameEvents.onVesselChange.Fire(FlightGlobals.ActiveVessel);
             }
             var UnloadDistance = "Unload at: " + FlightGlobals.ActiveVessel.vesselRanges.landed.load;
-            GUI.Label(new Rect(140, 20, 111, 22), UnloadDistance, BaseCamera.guiStyleLabelBold);
+            GUI.Label(new Rect(140, 20, 111, 22), UnloadDistance, Styles.GUIStyleLabelBold);
 
             if (GUI.Toggle(new Rect(20, 40, 222, 20), _shadersToUse0, "Shaders pack Full (7 choices)"))
             {
@@ -132,7 +132,7 @@ namespace OLDD_camera
                 SaveWindowData();
             }
 
-            GUI.Label(new Rect(2, 102, WindowTextureWidth, 24), "- Vessels with camera in range -", BaseCamera.guiStyleGreenLabelBold);
+            GUI.Label(new Rect(2, 102, WindowTextureWidth, 24), "- Vessels with camera in range -", Styles.GUIStyleGreenLabelBold);
 
             var vessels = _vesselsWithCamera;
             vessels.Remove(FlightGlobals.ActiveVessel);
@@ -143,7 +143,7 @@ namespace OLDD_camera
                 var situation = vessel.RevealSituationString();
                 var str = string.Format("{0}. {1} ({2:N} m) - {3} ", i, vessel.vesselName, range, situation);
                 if (range <= CheckDist)
-                    GUI.Label(new Rect(20, 104 + 20 * i, 222, 20), str, BaseCamera.guiStyleGreenLabelStandart);
+                    GUI.Label(new Rect(20, 104 + 20 * i, 222, 20), str, Styles.GUIStyleGreenLabelStandart);
                 else
                     GUI.Label(new Rect(20, 104 + 20 * i, 222, 20), str);
             }

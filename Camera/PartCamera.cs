@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace OLDD_camera.Camera
 {
-    class PartCamera : BaseKspCamera
+    class PartCamera : BaseCamera
     {
         private static HashSet<int> usedId = new HashSet<int>();
 
@@ -80,34 +80,34 @@ namespace OLDD_camera.Camera
             set { currentZoom = value; }
         }
 
-        public PartCamera(Part part, CameraInfo info, string windowLabel = "Camera")
-            : base(part, info.WindowSize, windowLabel)
+        public PartCamera(Part part, CameraInfo cameraInfo, string windowLabel = "Camera")
+            : base(part, cameraInfo.WindowSize, windowLabel)
         {
-            var splresource = info.ResourceScanning.Split('.').ToList();
+            var splresource = cameraInfo.ResourceScanning.Split('.').ToList();
             ResourceName = splresource[0];
             ResourceUsage = int.Parse(splresource[1]);
-            bulletName = info.BulletName;
-            rotatorZ = partGameObject.gameObject.GetChild(info.RotatorZ);
-            rotatorY = partGameObject.gameObject.GetChild(info.RotatorY);
-            zoommer = partGameObject.gameObject.GetChild(info.Zoommer);
-            stepper = info.Stepper;
-            camObject = partGameObject.gameObject.GetChild(info.CameraName);
-            AllowedDistance = info.AllowedScanDistance;
+            bulletName = cameraInfo.BulletName;
+            rotatorZ = partGameObject.gameObject.GetChild(cameraInfo.RotatorZ);
+            rotatorY = partGameObject.gameObject.GetChild(cameraInfo.RotatorY);
+            zoommer = partGameObject.gameObject.GetChild(cameraInfo.Zoommer);
+            stepper = cameraInfo.Stepper;
+            camObject = partGameObject.gameObject.GetChild(cameraInfo.CameraName);
+            AllowedDistance = cameraInfo.AllowedScanDistance;
 
-            IsOnboard = info.IsOnboard;
-            IsLookAtMe = info.IsLookAtMe;
-            IsFollowMe = info.IsFollowMe;
-            IsLookAtMeAutoZoom = info.IsLookAtMeAutoZoom;
-            IsTargetCam = info.IsTargetCam;
-            IsFollowMeOffsetXXX = info.IsFollowMeOffsetX;
-            IsFollowMeOffsetYYY = info.IsFollowMeOffsetY;
-            IsFollowMeOffsetZZZ = info.IsFollowMeOffsetZ;
+            IsOnboard = cameraInfo.IsOnboard;
+            IsLookAtMe = cameraInfo.IsLookAtMe;
+            IsFollowMe = cameraInfo.IsFollowMe;
+            IsLookAtMeAutoZoom = cameraInfo.IsLookAtMeAutoZoom;
+            IsTargetCam = cameraInfo.IsTargetCam;
+            IsFollowMeOffsetXXX = cameraInfo.IsFollowMeOffsetX;
+            IsFollowMeOffsetYYY = cameraInfo.IsFollowMeOffsetY;
+            IsFollowMeOffsetZZZ = cameraInfo.IsFollowMeOffsetZ;
 
             lastZoom = currentZoom;
 
             GameEvents.onGameSceneLoadRequested.Add(LevelWasLoaded);
 
-            GetCurrentBullets(bulletName, info.CurrentHits);
+            GetCurrentBullets(bulletName, cameraInfo.CurrentHits);
         }
 
         private void GetCurrentBullets(string bulletName, int _hits)
@@ -220,7 +220,7 @@ namespace OLDD_camera.Camera
 
             //isTargetPoint = GUI.Toggle(new Rect(widthOffset - 2, 233, 88, 20), isTargetPoint, "Target Mark");
 
-            GUI.Label(new Rect(widthOffset, 311, 80, 20), string.Format("Bullets: {0:F0}", hits), guiStyleLabelBold);
+            GUI.Label(new Rect(widthOffset, 311, 80, 20), string.Format("Bullets: {0:F0}", hits), Styles.GUIStyleLabelBold);
 
             base.ExtendedDrawWindowL1();
         }
@@ -230,7 +230,7 @@ namespace OLDD_camera.Camera
             if (IsLookAtMe)
             {
                 GUI.Box(new Rect(widthOffset - 4, 36, 86, 74), "Look At Me");
-                GUI.Label(new Rect(widthOffset, 52, 84, 44), "Focus on:\n" + FlightGlobals.ActiveVessel.vesselName, guiStyleLabelBold);
+                GUI.Label(new Rect(widthOffset, 52, 84, 44), "Focus on:\n" + FlightGlobals.ActiveVessel.vesselName, Styles.GUIStyleLabelBold);
                 IsLookAtMeAutoZoom = GUI.Toggle(new Rect(widthOffset, 86, 86, 20), IsLookAtMeAutoZoom, "AutoZoom");
             }
 
@@ -247,7 +247,7 @@ namespace OLDD_camera.Camera
                 GUI.Box(new Rect(widthOffset - 2, 36, 86, 74), "Target Data");
                 var target = TargetHelper.Target as Vessel;
                 if (target != null)
-                    GUI.Label(new Rect(widthOffset + 4, 52, 84, 44), "Focus on:\n" + TargetHelper.Target.GetName(), guiStyleLabelBold);
+                    GUI.Label(new Rect(widthOffset + 4, 52, 84, 44), "Focus on:\n" + TargetHelper.Target.GetName(), Styles.GUIStyleLabelBold);
                 else
                     GUI.Label(new Rect(widthOffset + 4, 56, 84, 22), "NO TARGET");
             }
@@ -259,7 +259,7 @@ namespace OLDD_camera.Camera
             {
                 Graphics.DrawTexture(texturePosition, textureNoSignal[textureNoSignalId]);
                 GUI.Label(new Rect(texturePosition.xMin + 32 * windowSizeCoef, texturePosition.yMin + 32 * windowSizeCoef, 160, 160),
-                "TARGET \n IS \n OUT OF RANGE", guiStyleRedLabelBoldLarge);
+                "TARGET \n IS \n OUT OF RANGE", Styles.GUIStyleRedLabelBoldLarge);
             }
             base.ExtendedDrawWindowL2();
         }
@@ -268,7 +268,7 @@ namespace OLDD_camera.Camera
         {
             var str = "Mode: " + cameraMode + " ( x " + calculatedZoom + " )";
             GUI.Label(new Rect(texturePosition.xMin + 44 * windowSizeCoef, texturePosition.yMax - 16, 160, 20),
-                str, guiStyleGreenLabelSmall);
+                str, Styles.GUIStyleGreenLabelSmall);
             base.ExtendedDrawWindowL3();
         }
 
@@ -473,8 +473,8 @@ namespace OLDD_camera.Camera
             DrawScanningRay();
             DrawVisibilityRay();
 
-            allCamerasGameObject.Last().transform.position = camObject.gameObject.transform.position;
-            allCamerasGameObject.Last().transform.rotation = camObject.gameObject.transform.rotation;
+            AllCamerasGameObject.Last().transform.position = camObject.gameObject.transform.position;
+            AllCamerasGameObject.Last().transform.rotation = camObject.gameObject.transform.rotation;
 
             var step = -(lastZoom - currentZoom) / stepper;
             lastZoom = currentZoom;
@@ -485,11 +485,11 @@ namespace OLDD_camera.Camera
             rotateYBuffer += rotateY;
             zoomBuffer += step;
 
-            allCamerasGameObject[0].transform.rotation = allCamerasGameObject.Last().transform.rotation;
-            allCamerasGameObject[1].transform.rotation = allCamerasGameObject.Last().transform.rotation;
-            allCamerasGameObject[2].transform.rotation = allCamerasGameObject.Last().transform.rotation;
-            allCamerasGameObject[2].transform.position = allCamerasGameObject.Last().transform.position;
-            allCameras.ForEach(cam => cam.fieldOfView = realZoom); //currentZoom); 
+            AllCamerasGameObject[0].transform.rotation = AllCamerasGameObject.Last().transform.rotation;
+            AllCamerasGameObject[1].transform.rotation = AllCamerasGameObject.Last().transform.rotation;
+            AllCamerasGameObject[2].transform.rotation = AllCamerasGameObject.Last().transform.rotation;
+            AllCamerasGameObject[2].transform.position = AllCamerasGameObject.Last().transform.position;
+            AllCameras.ForEach(cam => cam.fieldOfView = realZoom); //currentZoom); 
             rotateZ = 0;
             rotateY = 0;
         }
@@ -540,7 +540,7 @@ namespace OLDD_camera.Camera
 
         private bool UseResourceForScanning()
         {
-            //var res = part.vessel.GetActiveResources().First(x => x.info.name == ResourceName);
+            //var res = part.vessel.GetActiveResources().First(x => x.cameraInfo.name == ResourceName);
             //if (res == null)
             //    return false;
             //if (res.amount < ResourceUsage)
@@ -571,7 +571,7 @@ namespace OLDD_camera.Camera
 
         private bool isInsight(out Vector3 endPoint)
         {
-            var camera = allCameras.Last();
+            var camera = AllCameras.Last();
             endPoint = TargetHelper.Target.GetTransform().position;
             var point = camera.WorldToViewportPoint(endPoint); //get current targeted vessel 
             var x = point.x; // (0;1)

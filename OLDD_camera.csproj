@@ -36,10 +36,11 @@
     <Compile Include="CameraDestroyer.cs" />
     <Compile Include="Camera\CameraInfo.cs" />
     <Compile Include="DockCamToolbarButton.cs" />
+    <Compile Include="Styles.cs" />
     <Compile Include="ToolbarWrapper.cs" />
     <Compile Include="Modules\PartCameraModule.cs" />
     <Compile Include="CameraShaders.cs" />
-    <Compile Include="Camera\BaseKspCamera.cs" />
+    <Compile Include="Camera\BaseCamera.cs" />
     <Compile Include="Camera\DockingCamera.cs" />
     <Compile Include="Modules\DockingCameraModule.cs" />
     <Compile Include="Camera\PartCamera.cs" />
@@ -52,6 +53,7 @@
       <HintPath>D:\KSP_121_test\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="UnityEngine">
       <HintPath>D:\KSP_121_test\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
