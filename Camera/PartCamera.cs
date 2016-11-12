@@ -57,9 +57,9 @@ namespace OLDD_camera.Camera
 
         internal string cameraMode;
 
-        internal float IsFollowMeOffsetXXX;
-        internal float IsFollowMeOffsetYYY;
-        internal float IsFollowMeOffsetZZZ;
+        internal float IsFollowMeOffsetX;
+        internal float IsFollowMeOffsetY;
+        internal float IsFollowMeOffsetZ;
         //private float _targetOffset = 100;
         internal Transform CurrentCamTarget;
         internal Transform CurrentCam;
@@ -99,9 +99,9 @@ namespace OLDD_camera.Camera
             IsFollowMe = cameraInfo.IsFollowMe;
             IsLookAtMeAutoZoom = cameraInfo.IsLookAtMeAutoZoom;
             IsTargetCam = cameraInfo.IsTargetCam;
-            IsFollowMeOffsetXXX = cameraInfo.IsFollowMeOffsetX;
-            IsFollowMeOffsetYYY = cameraInfo.IsFollowMeOffsetY;
-            IsFollowMeOffsetZZZ = cameraInfo.IsFollowMeOffsetZ;
+            IsFollowMeOffsetX = cameraInfo.IsFollowMeOffsetX;
+            IsFollowMeOffsetY = cameraInfo.IsFollowMeOffsetY;
+            IsFollowMeOffsetZ = cameraInfo.IsFollowMeOffsetZ;
 
             lastZoom = currentZoom;
 
@@ -237,9 +237,9 @@ namespace OLDD_camera.Camera
             if (IsFollowMe)
             {
                 GUI.Box(new Rect(widthOffset, 36, 86, 74), "Offset X,Y,Z");
-                IsFollowMeOffsetXXX = GUI.HorizontalSlider(new Rect(widthOffset + 1, 58, 80, 10), IsFollowMeOffsetXXX, -80, 80);
-                IsFollowMeOffsetYYY = GUI.HorizontalSlider(new Rect(widthOffset + 1, 74, 80, 10), IsFollowMeOffsetYYY, -80, 80);
-                IsFollowMeOffsetZZZ = GUI.HorizontalSlider(new Rect(widthOffset + 1, 90, 80, 10), IsFollowMeOffsetZZZ, -80, 80);
+                IsFollowMeOffsetX = GUI.HorizontalSlider(new Rect(widthOffset + 1, 58, 80, 10), IsFollowMeOffsetX, -80, 80);
+                IsFollowMeOffsetY = GUI.HorizontalSlider(new Rect(widthOffset + 1, 74, 80, 10), IsFollowMeOffsetY, -80, 80);
+                IsFollowMeOffsetZ = GUI.HorizontalSlider(new Rect(widthOffset + 1, 90, 80, 10), IsFollowMeOffsetZ, -80, 80);
             }
 
             if (IsTargetCam)
@@ -283,7 +283,7 @@ namespace OLDD_camera.Camera
                     IsOnboard = IsFollowMe = IsTargetCam = false;
                     var lastCameraMode = cameraMode;
                     cameraMode = "Look at Me";
-                    IsFollowMeOffsetXXX = IsFollowMeOffsetYYY = IsFollowMeOffsetZZZ = 0;
+                    IsFollowMeOffsetX = IsFollowMeOffsetY = IsFollowMeOffsetZ = 0;
                     if (!IsLookAtMeEnabled)
                     {
                         CameraPositioning(lastCameraMode);
@@ -332,7 +332,7 @@ namespace OLDD_camera.Camera
                 IsOnboard = true;
                 //IsLookAtMe = IsFollowMe = IsTargetCam = false;
                 cameraMode = "Onboard";
-                IsFollowMeOffsetXXX = IsFollowMeOffsetYYY = IsFollowMeOffsetZZZ = 0;
+                IsFollowMeOffsetX = IsFollowMeOffsetY = IsFollowMeOffsetZ = 0;
                 if (!IsOnboardEnabled)
                 {
                     camObject.transform.rotation = _currentCamRotation;

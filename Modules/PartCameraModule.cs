@@ -14,7 +14,7 @@ namespace OLDD_camera.Modules
         public string IsPowered;
 
         [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Bullets: ")]
-        public string aboutHits;
+        public string AboutHits;
 
         //[KSPField(isPersistant = true)]
         //public int currentHits = -1;
@@ -53,9 +53,9 @@ namespace OLDD_camera.Modules
         //[KSPField]
         //public string resourceScanning;
 
-        private GameObject capObject;
-        private GameObject camObject;
-        private PartCamera camera;
+        private GameObject _capObject;
+        private GameObject _camObject;
+        private PartCamera _camera;
         private Vector3 _initialUpVector;
 
         private float _targetOffset = 100;
@@ -81,19 +81,22 @@ namespace OLDD_camera.Modules
         [KSPField(isPersistant = true)]
         private CameraInfo _cameraInfo;
 
-        public override void OnStart(StartState state)
+        //public override void OnStart(StartState state)
+        //{
+        //    if (HighLogic.LoadedSceneIsEditor || MapView.MapIsEnabled || _camera != null) return;
+        public override void OnStart(StartState state = StartState.Flying)
         {
-            if (HighLogic.LoadedSceneIsEditor || MapView.MapIsEnabled || camera != null) return;
+            if (state == StartState.Editor || _camera != null) return;
 
-            camera = new PartCamera(part, _cameraInfo);
+            _camera = new PartCamera(part, _cameraInfo);
           
-            capObject = part.gameObject.GetChild(_cameraInfo.Cap);
-            camObject = part.gameObject.GetChild(_cameraInfo.CameraName);
-            _initialUpVector = camObject.transform.up;
-            camera._initialCamRotation = camera._currentCamRotation = camObject.transform.rotation;
-            camera._initialCamPosition = camera._currentCamPosition = camObject.transform.position;
-            camera._initialCamLocalRotation = camera._currentCamLocalRotation = camObject.transform.localRotation;
-            camera._initialCamLocalPosition = camera._currentCamLocalPosition = camObject.transform.localPosition;
+            _capObject = part.gameObject.GetChild(_cameraInfo.Cap);
+            _camObject = part.gameObject.GetChild(_cameraInfo.CameraName);
+            _initialUpVector = _camObject.transform.up;
+            _camera._initialCamRotation = _camera._currentCamRotation = _camObject.transform.rotation;
+            _camera._initialCamPosition = _camera._currentCamPosition = _camObject.transform.position;
+            _camera._initialCamLocalRotation = _camera._currentCamLocalRotation = _camObject.transform.localRotation;
+            _camera._initialCamLocalPosition = _camera._currentCamLocalPosition = _camObject.transform.localPosition;
         }
 
         public override string GetInfo()
@@ -104,40 +107,40 @@ namespace OLDD_camera.Modules
 
         public override void OnUpdate()
         {
-            if (camera == null) return;
+            if (_camera == null) return;
 
-            if (camera.IsButtonOff)
+            if (_camera.IsButtonOff)
             {
                 IsEnabled = false;
-                camera.IsButtonOff = false;
+                _camera.IsButtonOff = false;
             }
 
-            if (camera.IsAuxiliaryWindowButtonPres)
-                StartCoroutine(camera.ResizeWindow());
+            if (_camera.IsAuxiliaryWindowButtonPres)
+                StartCoroutine(_camera.ResizeWindow());
 
-            if (camera.IsToZero)
+            if (_camera.IsToZero)
             {
-                camera.IsToZero = false;
-                StartCoroutine(camera.ReturnCamToZero());
+                _camera.IsToZero = false;
+                StartCoroutine(_camera.ReturnCamToZero());
             }
 
-            if (camera.IsWaitForRay)
+            if (_camera.IsWaitForRay)
             {
-                camera.IsWaitForRay = false;
-                StartCoroutine(camera.WaitForRay());
+                _camera.IsWaitForRay = false;
+                StartCoroutine(_camera.WaitForRay());
             }
 
-            _cameraInfo.IsOnboard = camera.IsOnboard;
-            _cameraInfo.IsLookAtMe = camera.IsLookAtMe;
-            _cameraInfo.IsLookAtMeAutoZoom = camera.IsLookAtMeAutoZoom;
-            _cameraInfo.IsFollowMe = camera.IsFollowMe;
-            _cameraInfo.IsTargetCam = camera.IsTargetCam;
+            _cameraInfo.IsOnboard = _camera.IsOnboard;
+            _cameraInfo.IsLookAtMe = _camera.IsLookAtMe;
+            _cameraInfo.IsLookAtMeAutoZoom = _camera.IsLookAtMeAutoZoom;
+            _cameraInfo.IsFollowMe = _camera.IsFollowMe;
+            _cameraInfo.IsTargetCam = _camera.IsTargetCam;
 
             if (_cameraInfo.IsFollowMe)
             {
-                _cameraInfo.IsFollowMeOffsetX = camera.IsFollowMeOffsetXXX;
-                _cameraInfo.IsFollowMeOffsetY = camera.IsFollowMeOffsetYYY;
-                _cameraInfo.IsFollowMeOffsetZ = camera.IsFollowMeOffsetZZZ;               
+                _cameraInfo.IsFollowMeOffsetX = _camera.IsFollowMeOffsetX;
+                _cameraInfo.IsFollowMeOffsetY = _camera.IsFollowMeOffsetY;
+                _cameraInfo.IsFollowMeOffsetZ = _camera.IsFollowMeOffsetZ;               
             }
             //FlightGlobals.fetch.SetVesselTarget(FlightGlobals.ActiveVessel); 
             if (_cameraInfo.IsOnboard) Onboard();
@@ -145,13 +148,13 @@ namespace OLDD_camera.Modules
             if (_cameraInfo.IsFollowMe) FollowMe();
             if (_cameraInfo.IsTargetCam) TargetCam();
 
-            if (camera.IsActivated)
-                camera.Update();
+            if (_camera.IsActivated)
+                _camera.Update();
 
             GetElectricConsumption();
 
-            _cameraInfo.CurrentHits = camera.hits;
-            aboutHits = _cameraInfo.CurrentHits + "/4";
+            _cameraInfo.CurrentHits = _camera.hits;
+            AboutHits = _cameraInfo.CurrentHits + "/4";
         }
 
         public void FixedUpdate()
@@ -164,10 +167,10 @@ namespace OLDD_camera.Modules
 
         private void SetCurrentMode(bool a, bool b, bool c, bool d)
         {
-            camera.IsOnboardEnabled = a;
-            camera.IsLookAtMeEnabled = b;
-            camera.IsFollowEnabled = c;
-            camera.IsTargetCamEnabled = d;
+            _camera.IsOnboardEnabled = a;
+            _camera.IsLookAtMeEnabled = b;
+            _camera.IsFollowEnabled = c;
+            _camera.IsTargetCamEnabled = d;
         }
 
         private void Onboard()
@@ -178,39 +181,39 @@ namespace OLDD_camera.Modules
         private void LookAtMe()
         {
             SetCurrentMode(false, true, false, false);
-            if (camera.IsLookAtMeAutoZoom)
+            if (_camera.IsLookAtMeAutoZoom)
             {
-                float dist = Vector3.Distance(camObject.transform.position, FlightGlobals.ActiveVessel.vesselTransform.position);
-                if (dist < 50) camera.currentZoom = camera.maxZoom;
-                if (dist > 50 && dist < 100) camera.currentZoom = 23;  //x10
-                if (dist > 100 && dist < 200) camera.currentZoom = 13; //x20
-                if (dist > 200 && dist < 400) camera.currentZoom = 3;  //x30 
-                if (dist > 400) camera.zoomMultiplier = true;
-                if (camera.zoomMultiplier)
+                float dist = Vector3.Distance(_camObject.transform.position, FlightGlobals.ActiveVessel.vesselTransform.position);
+                if (dist < 50) _camera.currentZoom = _camera.maxZoom;
+                if (dist > 50 && dist < 100) _camera.currentZoom = 23;  //x10
+                if (dist > 100 && dist < 200) _camera.currentZoom = 13; //x20
+                if (dist > 200 && dist < 400) _camera.currentZoom = 3;  //x30 
+                if (dist > 400) _camera.zoomMultiplier = true;
+                if (_camera.zoomMultiplier)
                 {
-                    if (dist > 400 && dist < 800) camera.currentZoom = 23;  //
-                    if (dist > 800 && dist < 1600) camera.currentZoom = 13; //
-                    if (dist > 1600 && dist < 3200) camera.currentZoom = 3; //
+                    if (dist > 400 && dist < 800) _camera.currentZoom = 23;  //
+                    if (dist > 800 && dist < 1600) _camera.currentZoom = 13; //
+                    if (dist > 1600 && dist < 3200) _camera.currentZoom = 3; //
                 }                
             }
             //camObject.transform.rotation = _initialCamRotation;
-            camObject.transform.LookAt(FlightGlobals.ActiveVessel.CoM, _initialUpVector);
+            _camObject.transform.LookAt(FlightGlobals.ActiveVessel.CoM, _initialUpVector);
         }
 
         private void FollowMe()
         {
-            if (!camera.IsFollowEnabled)
+            if (!_camera.IsFollowEnabled)
             {
                 SetCurrentMode(false, false, true, false);
-                camera.CurrentCamTarget = FlightGlobals.ActiveVessel.vesselTransform;
-                camera.CurrentCam = camObject.transform;
+                _camera.CurrentCamTarget = FlightGlobals.ActiveVessel.vesselTransform;
+                _camera.CurrentCam = _camObject.transform;
             }
 
-            var offset = camera.CurrentCamTarget.right * _cameraInfo.IsFollowMeOffsetX + camera.CurrentCamTarget.up * _cameraInfo.IsFollowMeOffsetY +
-                            camera.CurrentCamTarget.forward * _cameraInfo.IsFollowMeOffsetZ;
-            camera.CurrentCam.position = camera.CurrentCamTarget.position + offset;
+            var offset = _camera.CurrentCamTarget.right * _cameraInfo.IsFollowMeOffsetX + _camera.CurrentCamTarget.up * _cameraInfo.IsFollowMeOffsetY +
+                            _camera.CurrentCamTarget.forward * _cameraInfo.IsFollowMeOffsetZ;
+            _camera.CurrentCam.position = _camera.CurrentCamTarget.position + offset;
 
-            camera.CurrentCam.LookAt(FlightGlobals.ActiveVessel.CoM, camera.CurrentCamTarget.up);
+            _camera.CurrentCam.LookAt(FlightGlobals.ActiveVessel.CoM, _camera.CurrentCamTarget.up);
         }
 
         private void TargetCam()
@@ -224,11 +227,11 @@ namespace OLDD_camera.Modules
             SetCurrentMode(false,false,false,true);
             var direction = target.transform.position - FlightGlobals.ActiveVessel.transform.position;
             direction.Normalize();
-            camObject.transform.position = target.CoM - direction * _targetOffset;
+            _camObject.transform.position = target.CoM - direction * _targetOffset;
 
             var vectorUpNormalised = vessel.vesselTransform.up.normalized;
 
-            camObject.transform.LookAt(target.transform, vectorUpNormalised);                
+            _camObject.transform.LookAt(target.transform, vectorUpNormalised);                
         }
 
         private void GetElectricConsumption()
@@ -255,22 +258,22 @@ namespace OLDD_camera.Modules
 
         public void Activate()
         {
-            if (camera.IsActivated) return;
-            camera.Activate();
+            if (_camera.IsActivated) return;
+            _camera.Activate();
             StartCoroutine("CapRotator");
         }
         public void Deactivate()
         {
-            if (!camera.IsActivated) return;
-            camera.Deactivate();
+            if (!_camera.IsActivated) return;
+            _camera.Deactivate();
             StartCoroutine("CapRotator");
         }
         private IEnumerator CapRotator()
         {
-            int step = camera.IsActivated ? 5 : -5;
+            int step = _camera.IsActivated ? 5 : -5;
             for (int i = 0; i < 54; i++)
             {
-                capObject.transform.Rotate(new Vector3(0, 1f, 0), step);
+                _capObject.transform.Rotate(new Vector3(0, 1f, 0), step);
                 yield return new WaitForSeconds(1f / 270);
             }
         }
