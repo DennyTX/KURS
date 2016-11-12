@@ -53,13 +53,13 @@
             Stepper = int.Parse(config.GetValue("stepper"));
             AllowedScanDistance = int.Parse(config.GetValue("allowedScanDistance"));
             IsOnboard = bool.Parse(config.GetValue("IsOnboard"));
-            IsOnboard = bool.Parse(config.GetValue("IsLookAtMe"));
-            IsOnboard = bool.Parse(config.GetValue("IsLookAtMeAutoZoom"));
-            IsOnboard = bool.Parse(config.GetValue("IsFollowMe"));
-            IsOnboard = bool.Parse(config.GetValue("IsFollowMeOffsetX"));
-            IsOnboard = bool.Parse(config.GetValue("IsFollowMeOffsetY"));
-            IsOnboard = bool.Parse(config.GetValue("IsFollowMeOffsetZ"));
-            IsOnboard = bool.Parse(config.GetValue("IsTargetCam"));
+            IsLookAtMe = bool.Parse(config.GetValue("IsLookAtMe"));
+            IsLookAtMeAutoZoom = bool.Parse(config.GetValue("IsLookAtMeAutoZoom"));
+            IsFollowMe = bool.Parse(config.GetValue("IsFollowMe"));
+            IsFollowMeOffsetX = float.Parse(config.GetValue("IsFollowMeOffsetX"));
+            IsFollowMeOffsetY = float.Parse(config.GetValue("IsFollowMeOffsetY"));
+            IsFollowMeOffsetZ = float.Parse(config.GetValue("IsFollowMeOffsetZ"));
+            IsTargetCam = bool.Parse(config.GetValue("IsTargetCam"));
         }
 
         public void Save(ConfigNode node)
