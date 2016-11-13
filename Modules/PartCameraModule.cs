@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using OLDD_camera.Camera;
 using UnityEngine;
@@ -8,7 +9,8 @@ namespace OLDD_camera.Modules
     /// <summary>
     /// Module adds an external camera and gives control over it
     /// </summary>
-    class PartCameraModule : PartModule, ICamPart, IConfigNode
+    [Serializable]
+    public class PartCameraModule : PartModule, ICamPart, ISerializationCallbackReceiver
     {
         [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Camera powered: ")]
         public string IsPowered;
@@ -20,8 +22,8 @@ namespace OLDD_camera.Modules
         UI_Toggle(controlEnabled = true, enabledText = "ON", disabledText = "OFF", scene = UI_Scene.All)]
         public bool IsEnabled;
 
-        //[KSPField(isPersistant = true)]
-        //public int currentHits = -1;
+        [KSPField(isPersistant = true)]
+        private int currentHits = -1;
 
         //[KSPField]
         //public string bulletName = "Sphere";
@@ -79,7 +81,8 @@ namespace OLDD_camera.Modules
         //private float _IsFollowMeOffsetZZZ;
 
         [KSPField(isPersistant = true)]
-        private CameraInfo _cameraInfo;
+        [SerializeField]
+        public CameraInfo _cameraInfo;
 
         public override void OnStart(StartState state)
         {
@@ -87,8 +90,9 @@ namespace OLDD_camera.Modules
             //public override void OnStart(StartState state = StartState.Flying)
             //{
             //    if (_camera != null) return;
-            var node = new ConfigNode("cameraConfig");
-            _cameraInfo.Load(node);
+
+            //var node = new ConfigNode("cameraConfig");
+            //CameraInfo.Load(node);
 
             _camera = new PartCamera(part, _cameraInfo);
           
@@ -99,6 +103,16 @@ namespace OLDD_camera.Modules
             _camera._initialCamPosition = _camera._currentCamPosition = _camObject.transform.position;
             _camera._initialCamLocalRotation = _camera._currentCamLocalRotation = _camObject.transform.localRotation;
             _camera._initialCamLocalPosition = _camera._currentCamLocalPosition = _camObject.transform.localPosition;
+        }
+
+        public override void OnLoad(ConfigNode node)
+        {
+            _cameraInfo.Load(node);
+        }
+
+        public override void OnSave(ConfigNode node)
+        {
+            //_cameraInfo.Save(node);
         }
 
         public override string GetInfo()
@@ -279,7 +293,14 @@ namespace OLDD_camera.Modules
                 yield return new WaitForSeconds(1f / 270);
             }
         }
-        
+
+        public void OnBeforeSerialize()
+        {
+        }
+
+        public void OnAfterDeserialize()
+        {
+        }
     }
     interface ICamPart
     {

@@ -1,23 +1,34 @@
-﻿namespace OLDD_camera.Camera
-{
-    public class CameraInfo : IConfigNode
-    {
-        public CameraInfo()
-        {
-            WindowSize = 256;
-            CurrentHits = -1;
-            BulletName = "Sphere";
-            CameraName = "CamExt";
-            RotatorZ = "Case";
-            RotatorY = "Tube";
-            Zoommer = "Lenz";
-            Cap = "Cap";
-            Stepper = 1000; // using for zooming visualization. for different camera models
-            AllowedScanDistance = 1000; //max allowed distance for scanning experiment
-            ResourceScanning = "ElectricCharge.50"; //(resourseName/resourceUsage) for scanning
-        }
+﻿using System;
 
-        public int WindowSize { get; set; }
+namespace OLDD_camera.Camera
+{
+    [Serializable]
+    public struct CameraInfo : IConfigNode
+    {
+        //public CameraInfo()
+        //{
+        //    WindowSize = 256;
+        //    CurrentHits = -1;
+        //    BulletName = "Sphere";
+        //    CameraName = "CamExt";
+        //    RotatorZ = "Case";
+        //    RotatorY = "Tube";
+        //    Zoommer = "Lenz";
+        //    Cap = "Cap";
+        //    Stepper = 1000; // using for zooming visualization. for different camera models
+        //    AllowedScanDistance = 1000; //max allowed distance for scanning experiment
+        //    ResourceScanning = "ElectricCharge.50"; //(resourseName/resourceUsage) for scanning
+        //    IsOnboard = false;
+        //    IsLookAtMe = false;
+        //    IsLookAtMeAutoZoom = false;
+        //    IsFollowMe = false;
+        //    IsFollowMeOffsetX = 0;
+        //    IsFollowMeOffsetY = 0;
+        //    IsFollowMeOffsetZ = 0;
+        //    IsTargetCam = false;
+        //}
+
+        public int WindowSize;// { get; set; }
 
         public string ResourceScanning { get; set; }
 

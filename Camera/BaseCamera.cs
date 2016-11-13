@@ -70,6 +70,10 @@ namespace OLDD_camera.Camera
         
         protected BaseCamera(Part part, int windowSizeIni, string windowLabelIni = "Camera")
         {
+
+            windowPosition.width = windowSize * windowSizeCoef;
+            windowPosition.height = windowSize * windowSizeCoef + 34f;
+
             windowSize = (float)windowSizeIni/2;
             this.part = part;
             subWindowLabel = windowLabel;
@@ -202,8 +206,8 @@ namespace OLDD_camera.Camera
         private void DrawWindow(int id)
         {
 
-            windowPosition.width = windowSize * windowSizeCoef;
-            windowPosition.height = windowSize * windowSizeCoef + 34f;
+            //windowPosition.width = windowSize * windowSizeCoef;
+            //windowPosition.height = windowSize * windowSizeCoef + 34f;
 
             ExtendedDrawWindowL1();
             ExtendedDrawWindowL2();
