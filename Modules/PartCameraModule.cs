@@ -16,15 +16,15 @@ namespace OLDD_camera.Modules
         [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Bullets: ")]
         public string AboutHits;
 
-        //[KSPField(isPersistant = true)]
-        //public int currentHits = -1;
-        
-        //[KSPField]
-        //public string bulletName = "Sphere";
-
         [KSPField(guiActive = true, guiActiveEditor = false, guiName = "Camera", isPersistant = true),
         UI_Toggle(controlEnabled = true, enabledText = "ON", disabledText = "OFF", scene = UI_Scene.All)]
         public bool IsEnabled;
+
+        //[KSPField(isPersistant = true)]
+        //public int currentHits = -1;
+
+        //[KSPField]
+        //public string bulletName = "Sphere";
 
         //[KSPField]
         //public int windowSize = 256;
@@ -86,7 +86,7 @@ namespace OLDD_camera.Modules
         //    if (HighLogic.LoadedSceneIsEditor || MapView.MapIsEnabled || _camera != null) return;
         public override void OnStart(StartState state = StartState.Flying)
         {
-            if (state == StartState.Editor || _camera != null) return;
+            if (_camera != null) return;
 
             _camera = new PartCamera(part, _cameraInfo);
           
@@ -264,7 +264,7 @@ namespace OLDD_camera.Modules
         }
         public void Deactivate()
         {
-            if (!_camera.IsActivated) return;
+            if (_camera == null || !_camera.IsActivated) return;
             _camera.Deactivate();
             StartCoroutine("CapRotator");
         }
