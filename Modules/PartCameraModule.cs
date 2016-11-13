@@ -87,6 +87,8 @@ namespace OLDD_camera.Modules
             //public override void OnStart(StartState state = StartState.Flying)
             //{
             //    if (_camera != null) return;
+            var node = new ConfigNode("cameraConfig");
+            _cameraInfo.Load(node);
 
             _camera = new PartCamera(part, _cameraInfo);
           
