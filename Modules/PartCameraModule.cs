@@ -8,7 +8,7 @@ namespace OLDD_camera.Modules
     /// <summary>
     /// Module adds an external camera and gives control over it
     /// </summary>
-    class PartCameraModule : PartModule, ICamPart
+    class PartCameraModule : PartModule, ICamPart, IConfigNode
     {
         [KSPField(guiActive = true, guiActiveEditor = true, guiName = "Camera powered: ")]
         public string IsPowered;
@@ -81,12 +81,12 @@ namespace OLDD_camera.Modules
         [KSPField(isPersistant = true)]
         private CameraInfo _cameraInfo;
 
-        //public override void OnStart(StartState state)
-        //{
-        //    if (HighLogic.LoadedSceneIsEditor || MapView.MapIsEnabled || _camera != null) return;
-        public override void OnStart(StartState state = StartState.Flying)
+        public override void OnStart(StartState state)
         {
-            if (_camera != null) return;
+            if (HighLogic.LoadedSceneIsEditor || MapView.MapIsEnabled || _camera != null) return;
+            //public override void OnStart(StartState state = StartState.Flying)
+            //{
+            //    if (_camera != null) return;
 
             _camera = new PartCamera(part, _cameraInfo);
           
