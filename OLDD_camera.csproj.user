@@ -2,6 +2,6 @@
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>D:\KSP_120\KSP_x64.exe</StartProgram>
+    <StartProgram>D:\KSP_121_test\KSP_x64_Dbg.exe</StartProgram>
   </PropertyGroup>
 </Project>

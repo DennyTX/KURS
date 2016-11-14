@@ -3,7 +3,7 @@
 namespace OLDD_camera.Camera
 {
     [Serializable]
-    public struct CameraInfo : IConfigNode
+    public class CameraInfo //: IConfigNode
     {
         //public CameraInfo()
         //{

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using KspHelper.Events;
 using OLDD_camera.Camera;
 using UnityEngine;
 
@@ -80,9 +81,9 @@ namespace OLDD_camera.Modules
         //[KSPField(isPersistant = true)]
         //private float _IsFollowMeOffsetZZZ;
 
-        [KSPField(isPersistant = true)]
+        //[KSPField(isPersistant = true)]
         [SerializeField]
-        public CameraInfo _cameraInfo;
+        public CameraInfo _cameraInfo = new CameraInfo();
 
         public override void OnStart(StartState state)
         {
@@ -112,7 +113,7 @@ namespace OLDD_camera.Modules
 
         public override void OnSave(ConfigNode node)
         {
-            //_cameraInfo.Save(node);
+            _cameraInfo.Save(node);
         }
 
         public override string GetInfo()
@@ -296,6 +297,7 @@ namespace OLDD_camera.Modules
 
         public void OnBeforeSerialize()
         {
+            //this.CombineEvent("Deploy collectors", Deactivate, true);
         }
 
         public void OnAfterDeserialize()
